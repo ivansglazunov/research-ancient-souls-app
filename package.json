@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "build-client": "rm -rf ./client/lib && webpack ./client/src/index.js ./client/lib/index.js",
+    "build": "npm run build-client",
+    "start": "node ./server/index.js",
+    "launch": "npm run build && npm run start"
+  },
+  "dependencies": {
+    "ancient-peer": "AncientSouls/Peer#develop",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.5",
+    "repl": "^0.1.3",
+    "socket.io": "^2.0.4",
+    "webpack": "^3.10.0"
+  }
+}
