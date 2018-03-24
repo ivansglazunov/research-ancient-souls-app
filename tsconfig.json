@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "./",
+    "target": "es6"
+  },
+  "include": [
+    "./server/*.ts"
+  ],
+  "exclude": []
+}
