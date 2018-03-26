@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import * as http from 'http';
 import * as IO from 'socket.io';
 import * as express from 'express';
+const repl = require('repl');
 
 import { Node } from 'ancient-mixins/lib/node';
 
@@ -20,8 +21,9 @@ import {
 import passports from './passports';
 import {
   newDb,
-  SqliteOverrideTracking,
-} from './sqlite3';
+  OverrideTracking,
+} from './orient';
+
 import {
   newAsk,
 } from './tracking';
@@ -36,14 +38,14 @@ class App extends Node {
     passports(this.expressServer);
     
     this.db = await newDb();
-    this.tracking = new SqliteOverrideTracking().init(this.db);
+    this.tracking = new OverrideTracking().init(this.db, 250);
 
     this.httpServer.listen(process.env.PORT);
 
     this.emit('started', this);
   }
   async destroy() {
-    this.tracking.stop();
+    // this.tracking.stop();
     this.httpServer.close();
   }
   whenStarted(callback) {
@@ -58,34 +60,31 @@ app.start();
 app.whenStarted(async () => {
   const tracker = new AsketicTracker();
 
-  await new Promise(r => app.db.exec(
-    `create table test (id integer primary key autoincrement, value text);`,
-    () => r(),
-  ));
+  // await new Promise(r => app.db.exec(
+  //   `create table test (id integer primary key autoincrement, value text);`,
+  //   () => r(),
+  // ));
 
   tracker.init(newAsk(app, { schema: { fields: {
-    insert: {
-      name: 'select',
-      options: {
-        sql: `insert into test (value) values ("abc");`,
-        subscribe: false,
-      },
-    },
     select: {
       name: 'select',
       options: {
-        sql: `select * from test;`,
+        sql: `from V;`,
       },
       fill: true,
     },
   }}}));
 
   const cursor = new Cursor();
+
   trackerToBundles(tracker, (bundles) => {
     _.each(bundles, b => cursor.apply(b));
+    console.log({ select: cursor.data.select });
   });
+
   await tracker.subscribe();
-  setInterval(() => console.log(cursor.data.select), 1000);
+
+  const r = repl.start().context.app = app;
 });
 
 export {

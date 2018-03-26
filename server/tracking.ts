@@ -13,13 +13,14 @@ import {
 
 abstract class AbstractOverrideTracking extends Node {
   init(time = 250) {
+    this.time = time;
     const interval = setInterval(() => this.iterator(), this.time);
     this.once('destroy', () => clearInterval(interval));
     return this;
   }
   
   abstract fetch(query): Promise<any>;
-  abstract toItem(document, index, query, tracker): ITrackerItem;
+  abstract toItem(document, index, query, tracker): Promise<ITrackerItem>;
 
   trackings = [];
 
@@ -34,8 +35,9 @@ abstract class AbstractOverrideTracking extends Node {
 
   async override(traking) {
     const { query, tracker } = traking;
-    const data = await this.fetch(query);
-    tracker.override(_.map(data, (d,i) => this.toItem(d, i, query, tracker)));
+    const records = await this.fetch(query);
+    const data = await Promise.all(_.map(records, (d,i) => this.toItem(d, i, query, tracker)));
+    tracker.override(data);
   }
 
   iterator() {
