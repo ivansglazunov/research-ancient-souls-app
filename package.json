@@ -22,7 +22,7 @@
     "graphql": "^0.13.1",
     "graphql-anywhere": "^4.1.6",
     "graphql-tag": "^2.8.0",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.21",
     "mingo": "^2.2.0",
     "orientjs": "^2.2.9",
     "passport": "^0.4.0",
