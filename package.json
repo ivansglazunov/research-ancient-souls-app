@@ -30,13 +30,13 @@
     "pify": "^3.0.0",
     "rsvp": "^4.8.2",
     "socket.io": "^2.0.4",
-    "ts-loader": "^4.1.0",
+    "ts-loader": "^9.4.2",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.7.0",
     "tslint-eslint-rules": "^5.1.0",
     "typescript": "^2.7.2",
-    "webpack": "^4.2.0",
-    "webpack-cli": "^2.0.13"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   }
 }
